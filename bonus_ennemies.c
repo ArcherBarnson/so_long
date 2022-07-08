@@ -1,57 +1,58 @@
 #include "so_long.h"
-#include "so_long_bonus.h"
 
-void	ennemies_getpos(t_mlx_global *so_long, t_mlx_bonus *bonus)
+int	*generate_random_coordinates(int x, int y)
 {
-	int	x;
-	int	y;
-	int	i;
+	int		*rcords;
+	char	urand[2];
+	int		urand_fd;
+	int		i;
 
-	y = 0;
-	x = 0;
+	rcords = malloc(sizeof(int) * 2);
+	if (!rcords)
+		return (NULL);
 	i = 0;
-	while (y < so_long->map_dimensions[0] / 50)
+	urand_fd = open("/dev/urandom", O_RDONLY, 0644);
+	read(urand_fd, urand, 2);
+	close(urand_fd);
+	while (i < 2)
 	{
-		x = 0;
-		while (x < so_long->map_dimensions[1] / 50)
-		{
-			if (so_long->map_split[x][y] == 'X')
-			{
-				bonus->ennemypos[i][0] = y;
-				bonus->ennemypos[i][1] = x;
-				i++;
-			}
-			x++;
-		}
-		y++;
+		rcords[i] = (int)urand[i];
+		if (rcords[i] < 0)
+			rcords[i] = -rcords[i];
+		if (i == 0)
+			rcords[i] = (rcords[i] + 1) % x;
+		if (i == 1)
+			rcords[i] = (rcords[i] + 1) % y;
+		i++;
 	}
-	return ;
+	//printf("\ncols = %i\nrows = %i\n", rcords[0], rcords[1]);
+	return (rcords);
 }
 
 void	place_ennemies(t_mlx_global *so_long, t_mlx_bonus *bonus)
 {
-	int	x;
-	int	y;
+	int	cols;
+	int	rows;
+	int	rec;
+	int	*rcords;
 
-	x = 2;
-	y = 3;
-	while (x < so_long->map_dimensions[0] / 50)
+	cols = so_long->map_dimensions[0] / 50;
+	rows = so_long->map_dimensions[1] / 50;
+	rec = bonus->ennemy_count;
+	//printf("\nrec=%i\nx=%i\ny=%i\n", rec, x, y);
+	rcords = generate_random_coordinates(cols, rows);
+	while (rcords[0] < cols && rcords[1] < rows && rec > 0)
 	{
-		while (y < so_long->map_dimensions[1] / 50)
+		//printf("\nrec=%i\n", rec);
+		rcords = generate_random_coordinates(cols, rows);
+		if (so_long->map_split[rcords[0]][rcords[1]] == '0'
+			|| so_long->map_split[rcords[0]][rcords[1]] == 'X')
 		{
-			if (so_long->map_split[x][y] == '0')
-			{
-				mlx_put_image_to_window(so_long->mlx, so_long->window,
-						bonus->ennemy, x * 50, y * 50);
-				so_long->map_split[x][y] = 'X';
-			}
-			printf("%s\n", so_long->map_split[x]);
-			printf("\nec=%i\nx=%i\ny=%i\n", bonus->ennemy_count, x, y);
-			y += 2;
+			so_long->map_split[rcords[0]][rcords[1]] = 'X';
+			rec--;
 		}
-		y = 3;
-		x += 2;
 	}
+	//free(rcords);
 	return ;
 }
 
@@ -61,44 +62,48 @@ void	spawn_ennemies(t_mlx_global *so_long, t_mlx_bonus *bonus)
 	int	b;
 
 	bonus->ennemy = mlx_xpm_file_to_image(so_long->mlx,
-			"../sl_assets/debug_ennemy.xpm", &a, &b);
-	while (bonus->ennemy_count != 0)
-		place_ennemies(so_long, bonus);
+			"../sl_assets/test_ennemy.xpm", &a, &b);
+	place_ennemies(so_long, bonus);
+	//printf("\nec=%i\n", bonus->ennemy_count);
 	return ;
 }
 
 t_mlx_bonus	*ennemies_init(t_mlx_global *so_long)
 {
-	t_mlx_bonus *bonus;
+	t_mlx_bonus	*bonus;
+	int		i;
 
+	i = 0;
 	bonus = malloc(sizeof(t_mlx_bonus));
 	if (!bonus)
 		return (NULL);
+	default_init_bonus(bonus);
 	bonus->ennemy_count = 10;
 	bonus->player_health = 1;
 	bonus->ennemypos = malloc(sizeof(int *) * bonus->ennemy_count);
 	if (!bonus->ennemypos)
 		return (NULL);
+	while (i < bonus->ennemy_count)
+	{
+		bonus->ennemypos[i] = malloc(sizeof(int) * 2);
+		if (!bonus->ennemypos[i])
+			return (NULL);
+		i++;
+	}
 	spawn_ennemies(so_long, bonus);
-	ennemies_getpos(so_long, bonus);
 	return (bonus);
 }
 
-void	ft_damage(t_mlx_global *so_long, t_mlx_bonus *bonus)
+void	ft_damage(t_mlx_global *so_long, int x, int y)
 {
-	int	i;
-
-	i = 0;
-	while (i < bonus->ennemy_count)
+	if (so_long->map_split[so_long->player_pos[0] + x]
+		[so_long->player_pos[1] + y] == 'X')
 	{
-		if (so_long->player_pos[0] == bonus->ennemypos[i][0] &&
-			so_long->player_pos[1] == bonus->ennemypos[i][1])
+		//bonus->player_health--;
 		{
-			bonus->player_health--;
-			if (bonus->player_health == 0)
-				exit(0);
+			//clean_exit(so_long, bonus);
+			exit (0);
 		}
-		i++;
 	}
 	return ;
 }

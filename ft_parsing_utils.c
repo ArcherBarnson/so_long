@@ -49,15 +49,15 @@ int	verify_first_line(t_mlx_global *so_long)
 
 	j = 0;
 	while (so_long->map_split[0][j] != '\n')
-		{
-			if (so_long->map_split[0][j] != '1')
-				return (-1);
-			j++;
-		}
+	{
+		if (so_long->map_split[0][j] != '1')
+			return (-1);
+		j++;
+	}
 	return (0);
 }
 
-int	verify_tiles_values(int	P, int	E, int	C)
+int	verify_tiles_values(int P, int E, int C)
 {
 	int	error;
 

@@ -63,6 +63,8 @@ char	*malloc_free_cat(char *returnstr, char *newbuf)
 	newstr = malloc(sizeof(char) * (size + 1));
 	if (!newstr)
 		return (NULL);
+	if (!returnstr)
+		return (NULL);
 	while (returnstr[++j])
 		newstr[j] = returnstr[j];
 	free(returnstr);

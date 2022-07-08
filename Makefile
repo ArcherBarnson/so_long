@@ -18,6 +18,8 @@ SRCS	=	gnl/get_next_line_utils.c \
 		gnl/get_next_line.c \
 		libft/ft_strjoin.c \
 		libft/ft_itoa.c \
+		libft/ft_split.c \
+		struct_init.c \
 		ft_parsing_utils.c \
 		ft_parsing.c \
 		so_long_utils.c \
@@ -36,6 +38,8 @@ SRCS_BONUS =	gnl/get_next_line_utils.c \
 		so_long_events.c \
 		so_long_rules.c \
 		so_long.c \
+		so_long_mem_tools.c \
+		so_long_free_tools.c \
 		bonus_ennemies.c \
 		main_b.c
 

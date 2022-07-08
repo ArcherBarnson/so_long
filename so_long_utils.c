@@ -17,12 +17,14 @@ int	where_is_that_char(char c, char	*str)
 	int	i;
 
 	i = 0;
-	while (c != str[i])
+	while (str[i] && c != str[i])
 		i++;
+	if (str[i] == '\0')
+		return (-1);
 	return (i);
 }
 
-void	set_map_dimensions(t_mlx_global *so_long)
+void	get_map_dimensions(t_mlx_global *so_long)
 {
 	int	x;
 	int	y;
@@ -42,25 +44,26 @@ void	get_player_pos(t_mlx_global *so_long)
 	int	y;
 	int	x;
 
-	y = 0;
-	while (y < so_long->map_dimensions[0] / 50)
+	x = 0;
+	while (so_long->map_split[x] != NULL)
 	{
-		x = 0;
-		while (x < so_long->map_dimensions[1] / 50)
+		y = 0;
+		while (so_long->map_split[x][y] != '\n'
+		&& so_long->map_split[x][y] != '\0')
 		{
-			if (so_long->map_split[y][x] == 'P')
+			if (so_long->map_split[x][y] == 'P')
 			{
-				so_long->player_pos[0] = y;
-				so_long->player_pos[1] = x;
+				so_long->player_pos[0] = x;
+				so_long->player_pos[1] = y;
 			}
-			x++;
+			y++;
 		}
-		y++;
+		x++;
 	}
 	return ;
 }
 
-int	count_collectibles(t_mlx_global *so_long)
+/*int	count_collectibles(t_mlx_global *so_long)
 {
 	int	i;
 	int	j;
@@ -69,10 +72,11 @@ int	count_collectibles(t_mlx_global *so_long)
 	i = 0;
 	j = 0;
 	col_count = 0;
-	while (i < so_long->map_dimensions[0] / 50)
+	while (so_long->map_split[i] != NULL)
 	{
 		j = 0;
-		while (j < so_long->map_dimensions[1] / 50)
+		while (so_long->map_split[i][j] != '\n'
+		&& so_long->map_split[i][j] != '\0')
 		{
 			if (so_long->map_split[i][j] == 'C')
 				col_count++;
@@ -81,7 +85,7 @@ int	count_collectibles(t_mlx_global *so_long)
 		i++;
 	}
 	return (col_count);
-}
+}*/
 
 /*void	set_img(t_mlx_global *so_long, int texture)
 {

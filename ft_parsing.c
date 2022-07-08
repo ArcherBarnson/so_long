@@ -1,112 +1,119 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ft_parsing.c                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: bgrulois <bgrulois@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/21 12:00:11 by bgrulois          #+#    #+#             */
-/*   Updated: 2022/06/29 17:17:58 by bgrulois         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "so_long.h"
 
-int	verify_walls(t_mlx_global *so_long)
+int	verify_extension(char *map_file)
 {
-	int	i;
+	int	len;
+
+	len = ft_strlen(map_file);
+	if (map_file[len - 4] == '.' && map_file[len - 3] == 'b'
+		&& map_file[len - 2] == 'e' && map_file[len - 1] == 'r')
+		return (0);
+	return (-1);
+}
+
+int	check_wall(t_mlx_global *so_long, int i)
+{
 	int	j;
 
-	i = 0;
 	j = 0;
-	if (verify_first_line(so_long) == -1)
-		return (-1);
-	while (so_long->map_split[++i] != NULL)
+	if (i == 0 || so_long->map_split[i + 1] == NULL)
 	{
-		while (so_long->map_split[i][j])
+		while (so_long->map_split[i][j] != '\n'
+			&& so_long->map_split[i][j] != '\0')
+		{
+			if (so_long->map_split[i][j] != '1')
+				return (-1);
+			j++;
+		}
+	}
+	else
+	{
+		while (so_long->map_split[i][j] != '\n'
+			&& so_long->map_split[i][j] != '\0')
 			j++;
 		if (so_long->map_split[i][0] != '1'
-			&& so_long->map_split[i][j - 2] != '1')
-			return (-1);
-		j++;
-	}
-	while (so_long->map_split[i - 1][j] && so_long->map_split[i - 1][j] != '\n')
-	{
-		if (so_long->map_split[i - 1][j] != '1')
+			&& so_long->map_split[i][j] != '1')
 			return (-1);
 	}
 	return (0);
 }
 
-int	verify_tiles(t_mlx_global *so_long)
-{
-	int	i;
-	int	j;
-
-	i = -1;
-	j = 0;
-	while (so_long->map_split[++i])
-	{
-		while (so_long->map_split[i][++j] && so_long->map_split[i][j] != '\n')
-		{
-			if (so_long->map_split[i][j] == 'P')
-				so_long->P++;
-			else if (so_long->map_split[i][j] == 'E')
-				so_long->E++;
-			else if (so_long->map_split[i][j] == 'C')
-				so_long->C++;
-			if (is_char_in_str(so_long->map_split[i][j], TILES) == 0)
-				return (-1);
-		}
-		j = 0;
-	}
-	if (verify_tiles_values(so_long->P, so_long->E, so_long->C) == -1)
-		return (-1);
-	return (0);
-}
-
-int	global_check(t_mlx_global *so_long)
-{
-	int	error;
-
-	error = 0;
-	if (verify_walls(so_long) == -1)
-	{
-		write(2,"Your map isn't closed !\n", 24);
-		error = -1;
-	}
-	if (verify_tiles(so_long) == -1)
-	{
-		write(2, "Invalid tile(s)\n", 16);
-		error = -1;
-	}
-	return (error);
-}
-
-t_mlx_global *ft_parsing(char *map_file, t_mlx_global *so_long)
+int	check_bounds(t_mlx_global *so_long)
 {
 	int	i;
 	int	len;
 
-	i = count_lines(map_file);
-	so_long->map_split = malloc(sizeof(char *) * (i) + 1);
-	if (!so_long->map_split)
-		return (NULL);
-	so_long->map_fd = open(map_file, O_RDONLY);
-	if (so_long->map_fd == -1)
-		return (NULL);
 	i = 0;
-	so_long->map_split[0] = get_next_line(so_long->map_fd);
-	len = get_line_size(so_long->map_split[0]);
+	len = get_line_size(so_long->map_split[i]);
 	while (so_long->map_split[i] != NULL)
 	{
-		so_long->map_split[i + 1] = get_next_line(so_long->map_fd);
-		if (get_line_size(so_long->map_split[i]) != len)
-			return (NULL);
+		if (len != get_line_size(so_long->map_split[i]))
+			return (-1);
+		if (check_wall(so_long, i) == -1)
+			return (-1);
 		i++;
 	}
-	so_long->map_split[i] = NULL;
-	if (global_check(so_long) == -1)
-		return (NULL);
-	return (so_long);
+	return (0);
+}
+
+int	check_tiles(t_mlx_global *so_long)
+{
+	int	i;
+	int	j;
+	int	tile;
+
+	i = 0;
+	j = 0;
+	while (so_long->map_split[i] != NULL)
+	{
+		while (so_long->map_split[i][j] != '\n'
+			&& so_long->map_split[i][j] != '\0')
+		{
+			tile = where_is_that_char(so_long->map_split[i][j],
+				TILES);
+			printf("TILE = %i\n", tile);
+			if (tile == -1)
+				return (-1);
+			if (tile == 2)
+				so_long->P++;
+			if (tile == 3)
+				so_long->E++;
+			if (tile == 4)
+				so_long->C++;
+			j++;
+		}
+		printf("P == %i\n", so_long->P);
+		j = 0;
+		i++;
+	}
+	printf("P == %i\n", so_long->P);
+	return (0);
+}
+
+int	ft_parsing(char *map_file, t_mlx_global *so_long)
+{
+	char	*tmpline;
+
+	if (verify_extension(map_file) == -1)
+		return (-2);
+	so_long->map_fd = open(map_file, O_RDONLY, 0644);
+	if (so_long->map_fd <= 0)
+		return (-1);
+	tmpline = get_next_line(so_long->map_fd);
+	while (tmpline != NULL)
+	{
+		so_long->map_line = ft_strjoin(so_long->map_line, tmpline);
+		so_long->map_line = ft_strjoin(so_long->map_line, "|");
+		tmpline = get_next_line(so_long->map_fd);
+	}
+	so_long->map_split = ft_split(so_long->map_line, '|');
+	if (check_bounds(so_long) == -1)
+		return (-3);
+	if (check_tiles(so_long) == -1)
+		return (-4);
+	if (so_long->P != 1)
+		return (-5);
+	if (so_long->E < 1 || so_long->C < 1)
+		return (-6);
+	return (0);
 }
