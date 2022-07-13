@@ -26,6 +26,8 @@ SRCS	=	gnl/get_next_line_utils.c \
 		so_long_events.c \
 		so_long_rules.c \
 		so_long.c \
+		so_long_mem_tools.c \
+		so_long_free_tools.c \
 		main.c
 
 SRCS_BONUS =	gnl/get_next_line_utils.c \

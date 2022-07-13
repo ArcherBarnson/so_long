@@ -15,9 +15,8 @@
 int	close_window(t_mlx_global *so_long)
 {
 //	write(1, "window_closed\n", 14);
-	mlx_destroy_display(so_long->window);
-	mlx_destroy_window(so_long->mlx, so_long->window);
-	exit(0);
+	clean_exit(so_long, NULL);
+	return (0);
 }
 
 int	move_down(t_mlx_global *so_long)
@@ -25,7 +24,7 @@ int	move_down(t_mlx_global *so_long)
 	if (can_u_move(so_long, 1, 0) == 0)
 	{
 		if (can_u_exit(so_long, 1, 0) == 1)
-			exit(0);
+			clean_exit(so_long, NULL);
 		else
 			return (0);
 	}
@@ -43,7 +42,7 @@ int	move_up(t_mlx_global *so_long)
 	if (can_u_move(so_long, -1, 0) == 0)
 	{
 		if (can_u_exit(so_long, -1, 0) == 1)
-			exit(0);
+			clean_exit(so_long, NULL);
 		else
 			return (0);
 	}
@@ -61,7 +60,7 @@ int	move_left(t_mlx_global *so_long)
 	if (can_u_move(so_long, 0, -1) == 0)
 	{
 		if (can_u_exit(so_long, 0, -1) == 1)
-			exit(0);
+			clean_exit(so_long, NULL);
 		else
 			return (0);
 	}
@@ -79,7 +78,7 @@ int	move_right(t_mlx_global *so_long)
 	if (can_u_move(so_long, 0, 1) == 0)
 	{
 		if (can_u_exit(so_long, 0, 1) == 1)
-			exit(0);
+			clean_exit(so_long, NULL);
 		else
 			return (0);
 	}

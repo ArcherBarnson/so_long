@@ -85,9 +85,8 @@ void	get_player_pos(t_mlx_global *so_long)
 		i++;
 	}
 	return (col_count);
-}*/
-
-/*void	set_img(t_mlx_global *so_long, int texture)
+}
+void	set_img(t_mlx_global *so_long, int texture)
 {
 	so_long->img.addr = mlx_get_data_addr(so_long->img.img, &so_long->img.bpp,
 		&so_long->img.line_length, &so_long->img.endian);

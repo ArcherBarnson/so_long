@@ -14,7 +14,7 @@
 
 int	can_u_move(t_mlx_global *so_long, int x, int y)
 {
-	char	*step_display;
+	//char	*step_display;
 
 	if (so_long->map_split[so_long->player_pos[0] + x]
 		[so_long->player_pos[1] + y] == '1'
@@ -22,10 +22,10 @@ int	can_u_move(t_mlx_global *so_long, int x, int y)
 		[so_long->player_pos[1] + y] == 'E')
 		return (0);
 	if (is_collectible(so_long, x, y) == 1)
-		so_long->collectibles_left--;
+		so_long->C--;
 	so_long->step_count++;
-	step_display = ft_strjoin("step count > ", ft_itoa(so_long->step_count));
-	mlx_string_put(so_long->mlx, so_long->window, 100, 100, 123, step_display);
+	//step_display = ft_strjoin("step count > ", ft_itoa(so_long->step_count));
+	//mlx_string_put(so_long->mlx, so_long->window, 100, 100, 123, step_display);
 	return (1);
 }
 
@@ -33,7 +33,7 @@ int	can_u_exit(t_mlx_global *so_long, int x, int y)
 {
 	if (so_long->map_split[so_long->player_pos[0] + x]
 		[so_long->player_pos[1] + y] == 'E'
-		&& so_long->collectibles_left == 0)
+		&& so_long->C == 0)
 		return (1);
 	return (0);
 }
@@ -71,7 +71,7 @@ int	is_collectible(t_mlx_global *so_long, int x, int y)
 	{
 		so_long->map_split[so_long->player_pos[0] + x]
 		[so_long->player_pos[1] + y] = '0';
-		if (so_long->collectibles_left - 1 == 0)
+		if (so_long->C - 1 == 0)
 			unlock_exit(so_long);
 		return (1);
 	}

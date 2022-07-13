@@ -1,11 +1,11 @@
 #include "so_long.h"
 
-void	free_tab(char **tab, int size)
+void	free_tab(char **tab)
 {
 	int	i;
 
 	i = 0;
-	while (i < size)
+	while (tab[i] != NULL)
 	{
 		free(tab[i]);
 		i++;
@@ -36,13 +36,9 @@ void	free_all(t_mlx_global *so_long, t_mlx_bonus *bonus)
 	int	i;
 
 	i = -1;
-	free_tab(so_long->map_split, so_long->map_dimensions[0]);
+	free(so_long->map_line);
+	free_tab(so_long->map_split);
 	free_imgs(so_long);
-	while (++i < 2)
-		free(bonus->ennemypos[i]);
-	free(bonus->ennemypos);
-	if (bonus->ennemy)
-		free(bonus->ennemy);
 	if (so_long->window)
 		free(so_long->window);
 	if (so_long->mlx)
@@ -50,6 +46,13 @@ void	free_all(t_mlx_global *so_long, t_mlx_bonus *bonus)
 	if (so_long)
 		free(so_long);
 	if (bonus)
+	{
+		while (++i < 2)
+			free(bonus->ennemypos[i]);
+		if (bonus->ennemy)
+			free(bonus->ennemy);
+		free(bonus->ennemypos);
 		free(bonus);
+	}
 	return ;
 }

@@ -83,9 +83,11 @@ int	main(int ac, char **av)
 		return (-1);
 	if (ft_parsing(av[1], so_long) != 0)
 		return (err_msg(ft_parsing(av[1], so_long)));
+	so_long->mlx = mlx_init();
 	init_imgs(so_long);
 	get_player_pos(so_long);
-	so_long->mlx = mlx_init();
+	get_map_dimensions(so_long);
+	printf("VVVVVVVVVVVVV \n%i\n", so_long->map_dimensions[0]);
 	so_long->window = mlx_new_window(so_long->mlx,
 		so_long->map_dimensions[1], so_long->map_dimensions[0],
 		"So_long");

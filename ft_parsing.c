@@ -62,9 +62,9 @@ int	check_tiles(t_mlx_global *so_long)
 	int	j;
 	int	tile;
 
-	i = 0;
+	i = -1;
 	j = 0;
-	while (so_long->map_split[i] != NULL)
+	while (so_long->map_split[++i] != NULL)
 	{
 		while (so_long->map_split[i][j] != '\n'
 			&& so_long->map_split[i][j] != '\0')
@@ -82,11 +82,8 @@ int	check_tiles(t_mlx_global *so_long)
 				so_long->C++;
 			j++;
 		}
-		printf("P == %i\n", so_long->P);
 		j = 0;
-		i++;
 	}
-	printf("P == %i\n", so_long->P);
 	return (0);
 }
 

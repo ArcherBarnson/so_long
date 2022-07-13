@@ -43,6 +43,15 @@ void	default_init_bonus(t_mlx_bonus *bonus)
 
 void	clean_exit(t_mlx_global *so_long, t_mlx_bonus *bonus)
 {
+	mlx_destroy_image(so_long->mlx, so_long->ground);
+	mlx_destroy_image(so_long->mlx, so_long->wall);
+	mlx_destroy_image(so_long->mlx, so_long->collectible);
+	mlx_destroy_image(so_long->mlx, so_long->exit);
+	mlx_destroy_image(so_long->mlx, so_long->exit_open);
+	mlx_destroy_image(so_long->mlx, so_long->player);
+	mlx_destroy_window(so_long->mlx, so_long->window);
+	if (so_long->mlx != NULL)
+		mlx_destroy_display(so_long->window);
 	free_all(so_long, bonus);
 	exit(0);
 	return ;
