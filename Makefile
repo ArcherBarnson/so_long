@@ -34,15 +34,19 @@ SRCS_BONUS =	gnl/get_next_line_utils.c \
 		gnl/get_next_line.c \
 		libft/ft_strjoin.c \
 		libft/ft_itoa.c \
+		libft/ft_split.c \
 		ft_parsing_utils.c \
 		ft_parsing.c \
+		struct_init.c \
 		so_long_utils.c \
 		so_long_events.c \
 		so_long_rules.c \
 		so_long.c \
 		so_long_mem_tools.c \
 		so_long_free_tools.c \
-		bonus_ennemies.c \
+		bonus.c \
+		bonus_utils.c \
+		ft_respawn.c \
 		main_b.c
 
 CC	=	gcc	

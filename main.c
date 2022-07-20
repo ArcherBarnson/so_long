@@ -87,7 +87,6 @@ int	main(int ac, char **av)
 	init_imgs(so_long);
 	get_player_pos(so_long);
 	get_map_dimensions(so_long);
-	printf("VVVVVVVVVVVVV \n%i\n", so_long->map_dimensions[0]);
 	so_long->window = mlx_new_window(so_long->mlx,
 		so_long->map_dimensions[1], so_long->map_dimensions[0],
 		"So_long");

@@ -30,6 +30,7 @@
 #define A 97
 #define S 115
 #define D 100
+#define RATIO 6
 
 typedef struct s_mlx_global
 {
@@ -60,7 +61,6 @@ typedef	struct s_mlx_bonus
 	void	*ennemy;
 	int	ennemy_count;
 	int	**ennemypos;
-	int	player_health;
 	int	available_tiles;
 }		t_mlx_bonus;
 
@@ -78,13 +78,13 @@ int		check_wall(t_mlx_global *so_long, int i);
 int		check_tiles(t_mlx_global *so_long);
 int		global_check(t_mlx_global *so_long);
 int		where_is_that_char(char c, char *str);
-int		get_action(int keycode, t_mlx_global *so_long);
+int		get_action(int keycode, t_mlx_global *so_long, t_mlx_bonus *bonus);
 int		close_window(t_mlx_global *so_long);
-int		move_up(t_mlx_global *so_long);
-int		move_down(t_mlx_global *so_long);
-int		move_left(t_mlx_global *so_long);
-int		move_right(t_mlx_global *so_long);
-int		can_u_move(t_mlx_global *so_long, int x, int y);
+int		move_up(t_mlx_global *so_long, t_mlx_bonus *bonus);
+int		move_down(t_mlx_global *so_long, t_mlx_bonus *bonus);
+int		move_left(t_mlx_global *so_long, t_mlx_bonus *bonus);
+int		move_right(t_mlx_global *so_long, t_mlx_bonus *bonus);
+int		can_u_move(t_mlx_global *so_long, int x, int y, t_mlx_bonus *bonus);
 int		can_u_exit(t_mlx_global *so_long, int x, int y);
 int		is_collectible(t_mlx_global *so_long, int x, int y);
 int 		ft_parsing(char *map_file, t_mlx_global *so_long);
@@ -93,6 +93,7 @@ char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_itoa(int n);
 char	**ft_split(char const *s, char c);
 int	*generate_random_coordinates(int x, int y);
+int	count_available_tiles(t_mlx_global *so_long);
 void	init_imgs(t_mlx_global *so_long);
 void    draw_map(t_mlx_global *so_long);
 void	my_mlx_place_tile(t_mlx_global *so_long, int x, int y);
@@ -101,9 +102,11 @@ void	set_img(t_mlx_global *so_long, int texture);
 void	get_player_pos(t_mlx_global *so_long);
 void	refresh(t_mlx_global *so_long, int offset[2]);
 void	ennemies_getpos(t_mlx_global *so_long, t_mlx_bonus *bonus);
+void	load_ennemies(t_mlx_global *so_long, t_mlx_bonus *bonus);
 void	place_ennemies(t_mlx_global *so_long, t_mlx_bonus *bonus);
 void	spawn_ennemies(t_mlx_global *so_long, t_mlx_bonus *bonus);
 void	ft_damage(t_mlx_global *so_long, int x, int y);
+void	clean_map(t_mlx_global *so_long);
 void	default_init_global(t_mlx_global *so_long);
 void	default_init_bonus(t_mlx_bonus *bonus);
 void	free_tab(char **tab);

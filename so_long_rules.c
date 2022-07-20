@@ -12,7 +12,7 @@
 
 #include "so_long.h"
 
-int	can_u_move(t_mlx_global *so_long, int x, int y)
+int	can_u_move(t_mlx_global *so_long, int x, int y, t_mlx_bonus *bonus)
 {
 	//char	*step_display;
 
@@ -24,6 +24,16 @@ int	can_u_move(t_mlx_global *so_long, int x, int y)
 	if (is_collectible(so_long, x, y) == 1)
 		so_long->C--;
 	so_long->step_count++;
+	if (so_long->step_count % 5 == 0)
+	{
+		clean_map(so_long);
+		draw_map(so_long);
+		bonus->available_tiles = count_available_tiles(so_long);
+		bonus->ennemy_count = bonus->available_tiles / RATIO;
+		printf("EC======>>>   %i\n", bonus->ennemy_count);
+		load_ennemies(so_long, bonus);
+		spawn_ennemies(so_long, bonus);
+	}
 	//step_display = ft_strjoin("step count > ", ft_itoa(so_long->step_count));
 	//mlx_string_put(so_long->mlx, so_long->window, 100, 100, 123, step_display);
 	return (1);

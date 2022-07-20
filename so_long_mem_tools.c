@@ -29,20 +29,11 @@ void	default_init_global(t_mlx_global *so_long)
 	return ;
 }
 
-void	default_init_bonus(t_mlx_bonus *bonus)
-{
-	if (bonus != NULL)
-	{
-		//bonus->ennemy = NULL;
-		bonus->ennemy_count = 0;
-		bonus->player_health = 0;
-		bonus->ennemypos = NULL;
-	}
-	return ;
-}
-
 void	clean_exit(t_mlx_global *so_long, t_mlx_bonus *bonus)
 {
+	int	i = -1;
+	while (so_long->map_split[i++] != NULL)
+		printf("map : %s", so_long->map_split[i]);
 	mlx_destroy_image(so_long->mlx, so_long->ground);
 	mlx_destroy_image(so_long->mlx, so_long->wall);
 	mlx_destroy_image(so_long->mlx, so_long->collectible);

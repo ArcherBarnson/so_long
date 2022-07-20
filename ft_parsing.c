@@ -103,6 +103,7 @@ int	ft_parsing(char *map_file, t_mlx_global *so_long)
 		so_long->map_line = ft_strjoin(so_long->map_line, "|");
 		tmpline = get_next_line(so_long->map_fd);
 	}
+	free(tmpline);
 	so_long->map_split = ft_split(so_long->map_line, '|');
 	if (check_bounds(so_long) == -1)
 		return (-3);
