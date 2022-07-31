@@ -15,7 +15,16 @@
 int	can_u_move(t_mlx_global *so_long, int x, int y, t_mlx_bonus *bonus)
 {
 	//char	*step_display;
-
+	int	rstep;
+	int	ur_fd = open("/dev/urandom", O_RDONLY, 0644);
+	char	ur[1];
+	read(ur_fd, ur, 1);
+	close(ur_fd);
+	rstep = ur[0];
+	ur[1] = '\0';
+	rstep %= 12;
+	if (rstep == 0)
+		rstep = 1;
 	if (so_long->map_split[so_long->player_pos[0] + x]
 		[so_long->player_pos[1] + y] == '1'
 		|| so_long->map_split[so_long->player_pos[0] + x]
@@ -24,7 +33,7 @@ int	can_u_move(t_mlx_global *so_long, int x, int y, t_mlx_bonus *bonus)
 	if (is_collectible(so_long, x, y) == 1)
 		so_long->C--;
 	so_long->step_count++;
-	if (so_long->step_count % 5 == 0)
+	if (so_long->step_count %  rstep == 0)
 	{
 		clean_map(so_long);
 		draw_map(so_long);

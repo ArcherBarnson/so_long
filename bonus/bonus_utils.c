@@ -1,4 +1,4 @@
-#include "so_long.h"
+#include "../so_long.h"
 
 int	*generate_random_coordinates(int x, int y)
 {

@@ -44,10 +44,10 @@ SRCS_BONUS =	gnl/get_next_line_utils.c \
 		so_long.c \
 		so_long_mem_tools.c \
 		so_long_free_tools.c \
-		bonus.c \
-		bonus_utils.c \
-		ft_respawn.c \
-		main_b.c
+		bonus/bonus.c \
+		bonus/bonus_utils.c \
+		bonus/ft_respawn.c \
+		bonus/main_b.c
 
 CC	=	gcc	
 
@@ -72,6 +72,9 @@ bonus:		${NAME_B}
 
 clean:		
 		rm -rf ${OBJS}
+
+clean_b:		
+		rm -rf ${OBJS_B}
 
 fclean:		clean
 		rm -rf ${NAME}

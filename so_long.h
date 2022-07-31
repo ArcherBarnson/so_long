@@ -30,7 +30,7 @@
 #define A 97
 #define S 115
 #define D 100
-#define RATIO 6
+#define RATIO 20
 
 typedef struct s_mlx_global
 {

@@ -1,4 +1,4 @@
-#include "so_long.h"
+#include "../so_long.h"
 
 void	place_ennemies(t_mlx_global *so_long, t_mlx_bonus *bonus)
 {

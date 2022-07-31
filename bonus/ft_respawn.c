@@ -1,4 +1,4 @@
-#include "so_long.h"
+#include "../so_long.h"
 
 void	clean_map(t_mlx_global *so_long)
 {
